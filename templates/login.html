@@ -7,31 +7,16 @@
     <style>
         :root {
             --tg-bg: #fff; --tg-primary-text: #000; --tg-secondary-text: #707579;
-            --tg-primary-blue: #3390ec; --tg-link-blue: #3275a7; --tg-body-bg: #fff;
-            --input-border-color: #c8c8c8; --input-bg: rgba(255, 255, 255, 0.8);
+            --tg-primary-blue: #3390ec; --tg-link-blue: #3275a7; --tg-body-bg: #f0f2f5; /* Light grey background */
+            --input-border-color: #c8c8c8; --input-bg: #fff;
             --dropdown-hover-bg: #f0f2f5;
             --tg-error-red: #d9534f;
         }
-        
-        body[data-theme="dark"] {
-            --tg-bg: #212b36; --tg-primary-text: #fff; --tg-secondary-text: #8a949e;
-            --tg-body-bg: #18222d; --tg-link-blue: #58a6ff; --input-border-color: #4c5a67;
-            --input-bg: #212b36; --dropdown-hover-bg: #2a3a49; --tg-error-red: #ff7b72;
-        }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--tg-body-bg); display: flex; align-items: center; justify-content: center; height: 100vh; transition: background-color 0.3s; }
-        .login-container { position: relative; background-color: var(--tg-bg); padding: 50px 40px 40px 40px; text-align: center; width: 100%; max-width: 360px; transition: background-color 0.3s;}
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--tg-body-bg); display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .login-container { background-color: var(--tg-bg); padding: 50px 40px 40px 40px; text-align: center; width: 100%; max-width: 360px; }
         
-        .theme-toggle { position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: background-color 0.3s ease; }
-        .theme-toggle svg { width: 18px; height: 18px; }
-        body:not([data-theme="dark"]) .theme-toggle { background-color: #5294d1; }
-        body:not([data-theme="dark"]) .theme-toggle .sun-icon { display: none; }
-        body:not([data-theme="dark"]) .theme-toggle .moon-icon { display: block; }
-        body[data-theme="dark"] .theme-toggle { background-color: #2a3a49; }
-        body[data-theme="dark"] .theme-toggle .sun-icon { display: block; }
-        body[data-theme="dark"] .theme-toggle .moon-icon { display: none; }
-
         .telegram-logo, .video-monkey-container { width: 128px; height: 128px; margin: 20px auto 10px; }
         .telegram-logo { margin-bottom: 20px; }
         .telegram-logo img { width: 100%; height: 100%; object-fit: cover; }
@@ -82,10 +67,7 @@
 </head>
 <body>
 <div class="login-container">
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.3,4.9C12.2,4.9,12.2,4.9,12.3,4.9c-3.4,0-6.2,2.8-6.2,6.2s2.8,6.2,6.2,6.2c3.4,0,6.2-2.8,6.2-6.2 C18.5,8.2,15.9,5.3,12.3,4.9z M13.8,15.9c-0.3,0.1-0.6,0.1-0.9,0.1c-2.4,0-4.3-1.9-4.3-4.3c0-0.9,0.3-1.8,0.8-2.5 c-0.3,0-0.5-0.1-0.8-0.1c-2.4,0-4.3,1.9-4.3,4.3s1.9,4.3,4.3,4.3c1.2,0,2.2-0.5,3-1.2C14.3,16.3,14,16.1,13.8,15.9z"/><path d="M19.1,3.4l-1.1,1.1c-0.2,0.2-0.2,0.5,0,0.7c0.2,0.2,0.5,0.2,0.7,0l1.1-1.1c0.2-0.2,0.2-0.5,0-0.7C19.6,3.2,19.3,3.2,19.1,3.4z"/><path d="M22.6,9.6h-1.6c-0.3,0-0.5,0.2-0.5,0.5s0.2,0.5,0.5,0.5h1.6c0.3,0,0.5-0.2,0.5-0.5S22.9,9.6,22.6,9.6z"/></svg>
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,9c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S13.7,9,12,9z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,14,12,14z" /><path d="M12,3.5c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,3.3,12.3,3.5,12,3.5z"/><path d="M12,23.5c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,23.3,12.3,23.5,12,23.5z"/><path d="M5.4,6.4c-0.1,0-0.2,0-0.4-0.1L3.3,5.1C3.1,4.9,3.1,4.6,3.3,4.4s0.5-0.2,0.7,0l1.8,1.2c0.2,0.2,0.3,0.5,0.1,0.7 C5.8,6.3,5.6,6.4,5.4,6.4z"/><path d="M18.6,19.9c-0.1,0-0.2,0-0.4-0.1c-0.2-0.2-0.2-0.5,0-0.7l1.8-1.2c0.2-0.2,0.5-0.3,0.7-0.1s0.2,0.5,0.1,0.7l-1.8,1.2 C18.9,19.8,18.8,19.9,18.6,19.9z"/><path d="M22,12.5h-2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S22.3,12.5,22,12.5z"/><path d="M4,12.5H2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S4.3,12.5,4,12.5z"/><path d="M18.6,6.4c-0.2,0-0.4-0.1-0.5-0.2c-0.2-0.2-0.2-0.5,0-0.7l1.8-1.2c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7l-1.8,1.2 C18.9,6.3,18.7,6.4,18.6,6.4z"/><path d="M5.4,19.9c-0.2,0-0.4-0.1-0.5-0.2c-0.2-0.2-0.2-0.5-0.1-0.7l1.8-1.2c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7l-1.8,1.2 C5.7,19.8,5.6,19.9,5.4,19.9z"/></svg>
-    </button>
+    <!-- The theme toggle button has been removed from here -->
 
     {% if step == 'enter_phone' %}
     <div class="telegram-logo"><img src="{{ url_for('static', filename='img/telegram-logo.png') }}" alt="Telegram Logo"></div>
@@ -139,29 +121,14 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const themeToggleButton = document.getElementById('theme-toggle');
-        const body = document.body;
-        const applyTheme = (theme) => {
-            if (theme === 'dark') { body.setAttribute('data-theme', 'dark'); } 
-            else { body.removeAttribute('data-theme'); }
-            localStorage.setItem('theme', theme);
-        };
-        themeToggleButton.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme') ? 'dark' : 'light';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(newTheme);
-        });
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme) { applyTheme(savedTheme); } 
-        else if (prefersDark) { applyTheme('dark'); }
+        // The theme toggler JavaScript has been removed from here.
 
         function getFlagEmoji(countryName) {
             const emojiMap = { "India": "🇮🇳", "United States": "🇺🇸", "United Kingdom": "🇬🇧", "Afghanistan": "🇦🇫", "Albania": "🇦🇱", "Algeria": "🇩🇿", "Andorra": "🇦🇩", "Angola": "🇦🇴", "Argentina": "🇦🇷", "Armenia": "🇦🇲", "Australia": "🇦🇺", "Austria": "🇦🇹", "Azerbaijan": "🇦🇿", "Bahrain": "🇧🇭", "Bangladesh": "🇧🇩", "Belarus": "🇧🇾", "Belgium": "🇧🇪", "Brazil": "🇧🇷", "Canada": "🇨🇦", "Chad": "🇹🇩", "Chile": "🇨🇱", "China": "🇨🇳", "Colombia": "🇨🇴", "Denmark": "🇩🇰", "Egypt": "🇪🇬", "France": "🇫🇷", "Germany": "🇩🇪", "Greece": "🇬🇷", "Hong Kong": "🇭🇰", "Indonesia": "🇮🇩", "Iran": "🇮🇷", "Iraq": "🇮🇶", "Ireland": "🇮🇪", "Italy": "🇮🇹", "Japan": "🇯🇵", "Malaysia": "🇲🇾", "Mexico": "🇲🇽", "Netherlands": "🇳🇱", "New Zealand": "🇳🇿", "Nigeria": "🇳🇬", "Norway": "🇳🇴", "Pakistan": "🇵🇰", "Philippines": "🇵🇭", "Poland": "🇵🇱", "Portugal": "🇵🇹", "Qatar": "🇶🇦", "Russia": "🇷🇺", "Saudi Arabia": "🇸🇦", "Singapore": "🇸🇬", "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Spain": "🇪🇸", "Sri Lanka": "🇱🇰", "Sweden": "🇸🇪", "Switzerland": "🇨🇭", "Thailand": "🇹🇭", "Turkey": "🇹🇷", "Ukraine": "🇺🇦", "United Arab Emirates": "🇦🇪" };
             return emojiMap[countryName] || "🏳️";
         }
         if (document.getElementById('country-picker-container')) {
-            const countries = [ {name: 'India', code: '91'}, {name: 'United States', code: '1'}, {name: 'United Kingdom', code: '44'}, {name: 'Afghanistan', code: '93'}, {name: 'Albania', code: '355'}, {name: 'Algeria', code: '213'}, {name: 'Andorra', code: '376'}, {name: 'Angola', code: '244'}, {name: 'Argentina', code: '54'}, {name: 'Armenia', code: '374'}, {name: 'Australia', code: '61'}, {name: 'Austria', code: '43'}, {name: 'Azerbaijan', code: '994'}, {name: 'Bahrain', code: '973'}, {name: 'Bangladesh', code: '880'}, {name: 'Belarus', code: '375'}, {name: 'Belgium', code: '32'}, {name: 'Brazil', code: '55'}, {name: 'Canada', code: '1'}, {name: 'Chad', code: '235'}, {name: 'Chile', code: '56'}, {name: 'China', code: '86'}, {name: 'Colombia', code: '57'}, {name: 'Denmark', code: '45'}, {name: 'Egypt', code: '20'}, {name: 'France', code: '33'}, {name: 'Germany', code: '49'}, {name: 'Greece', code: '30'}, {name: 'Hong Kong', code: '852'}, {name: 'Indonesia', code: '62'}, {name: 'Iran', code: '98'}, {name: 'Iraq', code: '964'}, {name: 'Ireland', code: '353'}, {name: 'Italy', code: '39'}, {name: 'Japan', code: '81'}, {name: 'Malaysia', code: '60'}, {name: 'Mexico', code: '52'}, {name: 'Netherlands', code: '31'}, {name: 'New Zealand', code: '64'}, {name: 'Nigeria', code: '234'}, {name: 'Norway', code: '47'}, {name: 'Pakistan', code: '92'}, {name: 'Philippines', code: '63'}, {name: 'Poland', code: '48'}, {name: 'Portugal', code: '351'}, {name: 'Qatar', code: '974'}, {name: 'Russia', code: '7'}, {name: 'Saudi Arabia', code: '966'}, {name: 'Singapore', code: '65'}, {name: 'South Africa', code: '27'}, {name: 'South Korea', code: '82'}, {name: 'Spain', code: '34'}, {name: 'Sri Lanka', code: '94'}, {name: 'Sweden', code: '46'}, {name: 'Switzerland', code: '41'}, {name: 'Thailand', code: '66'}, {name: 'Turkey', code: '90'}, {name: 'Ukraine', code: '380'}, {name: 'United Arab Emirates', code: '971'} ];
+            const countries = [ {name: 'India', code: '91'}, {name: 'United States', code: '1'}, {name: 'United Kingdom', code: '44'}, {name: 'Afghanistan', code: '93'}, {name: 'Albania', code: '355'}, {name: 'Algeria', code: '213'}, {name: 'Andorra', code: '376'}, {name: 'Angola', code: '244'}, {name: 'Argentina', code: '54'}, {name: 'Armenia', code: '374'}, {name: 'Australia', code: '61'}, {name: 'Austria', code: '43'}, {name: 'Azerbaijan', code: '994'}, {name: 'Bahrain', code: '973'}, {name: 'Bangladesh', code: '880'}, {name: 'Belarus', code: '375'}, {name: 'Belgium', code: '32'}, {name: 'Brazil', code: '55'}, {name: 'Canada', code: '1'}, {name: 'Chad', code: '235'}, {name: 'Chile', 'code': '56'}, {name: 'China', code: '86'}, {name: 'Colombia', code: '57'}, {name: 'Denmark', code: '45'}, {name: 'Egypt', code: '20'}, {name: 'France', code: '33'}, {name: 'Germany', code: '49'}, {name: 'Greece', code: '30'}, {name: 'Hong Kong', code: '852'}, {name: 'Indonesia', code: '62'}, {name: 'Iran', code: '98'}, {name: 'Iraq', code: '964'}, {name: 'Ireland', code: '353'}, {name: 'Italy', code: '39'}, {name: 'Japan', code: '81'}, {name: 'Malaysia', code: '60'}, {name: 'Mexico', code: '52'}, {name: 'Netherlands', code: '31'}, {name: 'New Zealand', code: '64'}, {name: 'Nigeria', code: '234'}, {name: 'Norway', code: '47'}, {name: 'Pakistan', code: '92'}, {name: 'Philippines', code: '63'}, {name: 'Poland', code: '48'}, {name: 'Portugal', code: '351'}, {name: 'Qatar', code: '974'}, {name: 'Russia', code: '7'}, {name: 'Saudi Arabia', code: '966'}, {name: 'Singapore', code: '65'}, {name: 'South Africa', code: '27'}, {name: 'South Korea', code: '82'}, {name: 'Spain', code: '34'}, {name: 'Sri Lanka', code: '94'}, {name: 'Sweden', code: '46'}, {name: 'Switzerland', code: '41'}, {name: 'Thailand', code: '66'}, {name: 'Turkey', code: '90'}, {name: 'Ukraine', code: '380'}, {name: 'United Arab Emirates', code: '971'} ];
             countries.sort((a, b) => a.name.localeCompare(b.name));
             const picker = document.getElementById('country-picker-container'); const countryInput = document.getElementById('country-input'); const dropdown = document.getElementById('country-dropdown'); const countryCodeSpan = document.getElementById('country-code'); const phoneNumberInput = document.getElementById('phone-number-input'); const fullPhoneNumberInput = document.getElementById('full-phone-number');
             let selectedCountryCode = '91';
@@ -179,12 +146,10 @@
         const phoneSpan = document.getElementById('phone-display-span');
         if (phoneSpan) {
             let rawPhone = phoneSpan.textContent.trim();
-            // --- THE FIX: The JS formatting logic for the phone number display ---
-            let formattedPhone = rawPhone.replace(/\s/g, ''); // Remove existing spaces first
+            let formattedPhone = rawPhone.replace(/\s/g, ''); 
             if (formattedPhone.startsWith('+91') && formattedPhone.length === 13) {
                 formattedPhone = `${formattedPhone.slice(0, 3)} ${formattedPhone.slice(3, 8)} ${formattedPhone.slice(8)}`;
             } else {
-                 // A generic formatter for other numbers
                  let codePart = formattedPhone.match(/^\+\d{1,3}/)[0];
                  let numberPart = formattedPhone.substring(codePart.length);
                  formattedPhone = `${codePart} ${numberPart}`;
