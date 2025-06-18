@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Status</title>
+    <style>
+        /* (You can copy the same styles from login.html for consistency) */
+        body { font-family: sans-serif; background-color: #181818; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .result-box { background-color: #2b2d31; padding: 40px; border-radius: 10px; text-align: center; max-width: 500px; }
+        h2 { color: {% if success %}#22c55e{% else %}#ef4444{% endif %}; } /* Green for success, Red for failure */
+        textarea { width: 100%; height: 100px; margin-top: 15px; background-color: #1d1e22; color: #f0f0f0; border: 1px solid #404040; border-radius: 6px; padding: 10px; box-sizing: border-box; }
+        a { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <div class="result-box">
+        {% if success %}
+            <h2>✅ Login Successful!</h2>
+            <p>Your session has been captured. Store this string securely. You can use it to log in again without a phone or code.</p>
+            <textarea readonly>{{ session_string }}</textarea>
+        {% else %}
+            <h2>❌ Login Failed</h2>
+            <p>An error occurred:</p>
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+        <br><br>
+        <a href="{{ url_for('index') }}">Try again</a>
+    </div>
+</body>
+</html>
