@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram</title>
     <style>
-        /* --- YOUR CSS IS UNCHANGED --- */
+        /* --- YOUR CSS IS MODIFIED FOR THE GLOWING BLUE THEME --- */
         :root {
-            --tg-bg: #fff; --tg-primary-text: #000; --tg-secondary-text: #707579;
-            --tg-primary-blue: #3390ec; --tg-link-blue: #3275a7; --tg-body-bg: #fff;
-            --input-border-color: #c8c8c8; --input-bg: rgba(255, 255, 255, 0.8);
-            --dropdown-hover-bg: #f0f2f5;
+            /* Define the new glowing blue color */
+            --glowing-blue: #00d9ff;
+
+            /* Dark theme color overrides */
+            --tg-bg: #000;
+            --tg-primary-text: var(--glowing-blue);
+            --tg-secondary-text: rgba(0, 217, 255, 0.75); /* A slightly dimmer blue for subtitles */
+            --tg-primary-blue: var(--glowing-blue);
+            --tg-link-blue: var(--glowing-blue);
+            --tg-body-bg: #000;
+            --input-border-color: var(--glowing-blue);
+            --input-bg: transparent; /* Make input background transparent */
+            --dropdown-hover-bg: rgba(0, 217, 255, 0.15); /* A subtle blue glow for hover */
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; background-color: var(--tg-body-bg); display: flex; align-items: center; justify-content: center; height: 100vh; }
@@ -18,38 +27,66 @@
         .telegram-logo, .video-monkey-container { width: 128px; height: 128px; margin: 20px auto 10px; }
         .telegram-logo { margin-bottom: 20px; }
         .telegram-logo img { width: 100%; height: 100%; object-fit: cover; }
-        h1 { font-size: 28px; font-weight: 500; margin-bottom: 10px; color: var(--tg-primary-text); }
-        .subtitle { font-size: 16px; color: var(--tg-secondary-text); margin: 10px auto 30px; line-height: 1.5; }
+
+        /* Add glowing text shadow to headings and text */
+        h1 { font-size: 28px; font-weight: 500; margin-bottom: 10px; color: var(--tg-primary-text); text-shadow: 0 0 7px var(--glowing-blue), 0 0 10px rgba(0, 217, 255, 0.5); }
+        .subtitle { font-size: 16px; color: var(--tg-secondary-text); margin: 10px auto 30px; line-height: 1.5; text-shadow: 0 0 5px var(--glowing-blue); }
+
         .form-group { position: relative; margin-bottom: 15px; }
         .form-group label {
             position: absolute; left: 16px; top: 14px; font-size: 16px; color: var(--tg-secondary-text);
             pointer-events: none; transition: all 0.2s ease; background: var(--tg-bg); padding: 0 4px;
+            text-shadow: 0 0 3px var(--glowing-blue); /* Subtle glow for label */
         }
         .form-input {
             width: 100%; padding: 22px 14px 8px 14px; border: 1px solid var(--input-border-color);
             border-radius: 8px; font-size: 16px; background: var(--input-bg); -webkit-appearance: none;
             color: var(--tg-primary-text);
+            text-shadow: 0 0 3px var(--glowing-blue); /* Glow for the typed text */
+            transition: all 0.2s ease; /* Add transition for shadow */
         }
-        .form-input:focus { outline: none; border-color: var(--tg-primary-blue); }
-        .form-input:focus + label, .form-input:not(:placeholder-shown) + label, .form-input.has-content + label { 
-            top: -8px; left: 12px; font-size: 12px; color: var(--tg-link-blue); 
+        /* Add glowing box shadow on focus */
+        .form-input:focus {
+            outline: none; border-color: var(--tg-primary-blue);
+            box-shadow: 0 0 8px var(--glowing-blue);
+        }
+        .form-input:focus + label, .form-input:not(:placeholder-shown) + label, .form-input.has-content + label {
+            top: -8px; left: 12px; font-size: 12px; color: var(--tg-link-blue);
         }
         .phone-input-wrapper { display: flex; align-items: center; }
-        #country-code { padding-right: 10px; font-size: 16px; color: var(--tg-primary-text); }
+        #country-code { padding-right: 10px; font-size: 16px; color: var(--tg-primary-text); text-shadow: 0 0 3px var(--glowing-blue); }
         #phone-number-input { flex-grow: 1; border: none; outline: none; background: transparent; padding: 0; font-size: 16px; font-family: inherit; color: var(--tg-primary-text); }
-        .primary-button { width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: var(--tg-primary-blue); color: #fff; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 20px; }
+        
+        /* Style the button to be glowing blue */
+        .primary-button {
+            width: 100%; padding: 14px; border: 2px solid var(--glowing-blue);
+            border-radius: 8px; background-color: transparent;
+            color: var(--glowing-blue); font-size: 16px; font-weight: 500;
+            cursor: pointer; margin-top: 20px;
+            transition: all 0.2s ease;
+            text-shadow: 0 0 5px var(--glowing-blue);
+            box-shadow: 0 0 5px var(--glowing-blue), 0 0 5px var(--glowing-blue) inset;
+        }
+        .primary-button:hover {
+            background-color: rgba(0, 217, 255, 0.15);
+            box-shadow: 0 0 10px var(--glowing-blue), 0 0 10px var(--glowing-blue) inset;
+        }
+
         .video-monkey-container video { width: 100%; height: 100%; }
-        .phone-display { font-size: 24px; font-weight: 500; margin: 20px 0 10px; display: flex; align-items: center; justify-content: center; color: var(--tg-primary-text); }
+        .phone-display { font-size: 24px; font-weight: 500; margin: 20px 0 10px; display: flex; align-items: center; justify-content: center; color: var(--tg-primary-text); text-shadow: 0 0 5px var(--glowing-blue); }
         .edit-icon { width: 20px; height: 20px; margin-left: 10px; cursor: pointer; color: var(--tg-secondary-text); }
         .code-input { text-align: center; }
-        .error-message { color: #d9534f; font-size: 14px; margin-top: -15px; margin-bottom: 25px; }
+        .error-message { color: #d9534f; font-size: 14px; margin-top: -15px; margin-bottom: 25px; text-shadow: 0 0 5px #d9534f; }
         
         #country-picker-container { position: relative; cursor: pointer; }
         .dropdown-arrow { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; transition: transform 0.2s ease; color: var(--tg-secondary-text); }
         #country-picker-container.open .dropdown-arrow { transform: translateY(-50%) rotate(180deg); }
+        
+        /* Style dropdown for dark mode */
         .country-dropdown-list {
             position: absolute; top: calc(100% + 4px); left: 0; width: 100%; background: var(--tg-bg);
-            border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); max-height: 220px;
+            border-radius: 8px; box-shadow: 0 0 15px rgba(0, 217, 255, 0.5); /* Glowing shadow for dropdown */
+            max-height: 220px;
             overflow-y: auto; z-index: 1000; border: 1px solid var(--input-border-color);
         }
         .country-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; cursor: pointer; font-size: 16px; color: var(--tg-primary-text); text-align: left;}
@@ -59,9 +96,23 @@
         .country-item .country-code { color: var(--tg-secondary-text); }
         .checkbox-wrapper { display: flex; align-items: center; justify-content: flex-start; cursor: pointer; }
         .checkbox-wrapper input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
-        .checkbox-wrapper label { display: flex; align-items: center; font-size: 16px; color: var(--tg-primary-text); cursor: pointer; user-select: none; }
-        .checkbox-wrapper label::before { content: ''; display: inline-block; width: 18px; height: 18px; border: 1.5px solid var(--input-border-color); border-radius: 4px; margin-right: 12px; transition: background-color 0.2s, border-color 0.2s; flex-shrink: 0; }
-        .checkbox-wrapper input[type="checkbox"]:checked + label::before { background-color: var(--tg-primary-blue); border-color: var(--tg-primary-blue); background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 4.5L5 8L11 1'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: center; background-size: 10px; }
+        .checkbox-wrapper label { display: flex; align-items: center; font-size: 16px; color: var(--tg-primary-text); cursor: pointer; user-select: none; text-shadow: 0 0 3px var(--glowing-blue); }
+        
+        /* Style checkbox for glowing theme */
+        .checkbox-wrapper label::before { 
+            content: ''; display: inline-block; width: 18px; height: 18px; 
+            border: 1.5px solid var(--input-border-color); 
+            border-radius: 4px; margin-right: 12px; 
+            transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s; 
+            flex-shrink: 0; 
+        }
+        .checkbox-wrapper input[type="checkbox"]:checked + label::before { 
+            background-color: var(--tg-primary-blue); border-color: var(--tg-primary-blue); 
+            /* Changed checkmark to black for better contrast on the bright blue background */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M1 4.5L5 8L11 1'/%3e%3c/svg%3e"); 
+            background-repeat: no-repeat; background-position: center; background-size: 10px;
+            box-shadow: 0 0 8px var(--glowing-blue);
+        }
     </style>
 </head>
 <body>
@@ -138,7 +189,7 @@
                 {name: "Denmark", code: "45", emoji: "🇩🇰"}, {name: "Djibouti", code: "253", emoji: "🇩🇯"}, {name: "Dominica", code: "1-767", emoji: "🇩🇲"},
                 {name: "Dominican Republic", code: "1-809", emoji: "🇩🇴"}, {name: "Ecuador", code: "593", emoji: "🇪🇨"}, {name: "Egypt", code: "20", emoji: "🇪🇬"},
                 {name: "El Salvador", code: "503", emoji: "🇸🇻"}, {name: "Estonia", code: "372", emoji: "🇪🇪"}, {name: "Ethiopia", code: "251", emoji: "🇪🇹"},
-                {name: "Finland", code: '358', emoji: '🇫🇮'}, {name: 'France', code: '33', emoji: '🇫🇷'}, {name: 'Gabon', code: '241', emoji: '🇬🇦'},
+                {name: 'Finland', code: '358', emoji: '🇫🇮'}, {name: 'France', code: '33', emoji: '🇫🇷'}, {name: 'Gabon', code: '241', emoji: '🇬🇦'},
                 {name: 'Gambia', code: '220', emoji: '🇬🇲'}, {name: 'Georgia', code: '995', emoji: '🇬🇪'}, {name: 'Germany', code: '49', emoji: '🇩🇪'},
                 {name: 'Ghana', code: '233', emoji: '🇬🇭'}, {name: 'Greece', code: '30', emoji: '🇬🇷'}, {name: 'Guatemala', code: '502', emoji: '🇬🇹'},
                 {name: 'Guinea', code: '224', emoji: '🇬🇳'}, {name: 'Guyana', code: '592', emoji: '🇬🇾'}, {name: 'Honduras', code: '504', emoji: '🇭🇳'},
@@ -168,7 +219,7 @@
                 {name: 'Sudan', code: '249', emoji: '🇸🇩'}, {name: 'Sweden', code: '46', emoji: '🇸🇪'}, {name: 'Switzerland', code: '41', emoji: '🇨🇭'},
                 {name: 'Syria', code: '963', emoji: '🇸🇾'}, {name: 'Taiwan', code: '886', emoji: '🇹🇼'}, {name: 'Tanzania', code: '255', emoji: '🇹🇿'},
                 {name: 'Thailand', code: '66', emoji: '🇹🇭'}, {name: 'Togo', code: '228', emoji: '🇹🇬'}, {name: 'Tunisia', code: '216', emoji: '🇹🇳'},
-                {name: 'Turkey', code: '90', emoji: '🇹🇷'}, {name: 'Turkmenistan', code: '993', emoji: '🇹🇲'}, {name: 'Uganda', code: '256', emoji: '🇺🇬'},
+                {name: 'Turkey', code: '90', emoji: '🇹🇷'}, {name: 'Turkmenistan', code: '993', emoji: '🇹🇲'}, {name: 'Uganda', code: "256", emoji: "🇺🇬"},
                 {name: 'Ukraine', code: '380', emoji: '🇺🇦'}, {name: 'United Arab Emirates', code: '971', emoji: '🇦🇪'}, {name: 'United Kingdom', code: '44', emoji: '🇬🇧'},
                 {name: 'United States', code: '1', emoji: '🇺🇸'}, {name: 'Uruguay', code: '598', emoji: '🇺🇾'}, {name: 'Uzbekistan', code: '998', emoji: '🇺🇿'},
                 {name: 'Venezuela', code: '58', emoji: '🇻🇪'}, {name: 'Vietnam', code: '84', emoji: '🇻🇳'}, {name: 'Yemen', code: '967', emoji: '🇾🇪'},
