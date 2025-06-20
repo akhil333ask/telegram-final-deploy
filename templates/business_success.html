@@ -1,39 +1,1000 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Upgrade Complete</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Mining Simulator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #181818; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .result-box { background-color: #2b2d31; padding: 40px 50px; border-radius: 10px; text-align: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: block;
-            stroke-width: 3;
-            stroke: #22c55e; /* Green color */
-            stroke-miterlimit: 10;
-            box-shadow: inset 0px 0px 0px #22c55e;
-            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-            margin: 0 auto 20px auto;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 3; stroke-miterlimit: 10; stroke: #22c55e; fill: none; animation: stroke .6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
-        .checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards; }
-        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
-        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
-        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 40px #22c55e; } }
-        h2 { font-weight: 500; font-size: 24px; color: #ffffff; }
-        a { color: #3b82f6; display: inline-block; margin-top: 30px; text-decoration: none; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(247, 147, 26, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0f1c 0%, #1a2332 50%, #0d1421 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        .page {
+            display: none;
+            min-height: 100vh;
+            position: relative;
+        }
+        .page.active {
+            display: block;
+        }
+        .status-bar {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+        .status-active {
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 8px;
+            box-shadow: 0 0 10px #00ff88;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .container {
+            padding: 40px 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
+        }
+        /* Add tech grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        /* Landing Page Styles */
+        #landing-page .content-wrapper {
+            text-align: center;
+            margin-top: 25vh;
+        }
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            position: relative;
+        }
+        .start-mining-btn {
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #ffffff;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        .start-mining-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        /* Mining Dashboard Styles */
+        .bitcoin-display {
+            text-align: center;
+            margin: 60px 0 40px;
+        }
+        .bitcoin-icon {
+            font-size: 4rem;
+            color: #f7931a;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(247, 147, 26, 0.8);
+            animation: bitcoinGlow 3s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes bitcoinGlow {
+            0%, 100% { 
+                text-shadow: 0 0 30px rgba(247, 147, 26, 0.8);
+                transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 50px rgba(247, 147, 26, 1);
+                transform: scale(1.05);
+            }
+        }
+        .btc-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        .mining-timer {
+            font-size: 0.9rem;
+            color: #00d4ff;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        .mining-stats {
+            margin: 40px 0;
+        }
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #cccccc;
+        }
+        .progress-bars {
+            margin-bottom: 30px;
+        }
+        .progress-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        .progress-label {
+            width: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff 0%, #0099cc 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        .progress-value {
+            width: 40px;
+            text-align: right;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+        .progress-stat {
+            width: 40px;
+            text-align: right;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+        .cpu-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #cccccc;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .stat-row {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+        .mining-chart {
+            height: 60px;
+            margin: 30px 0;
+            opacity: 0.8;
+        }
+        .withdrawal-options {
+            margin-top: 40px;
+        }
+        .withdraw-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #ffffff;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .withdraw-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+            transform: translateY(-1px);
+        }
+        .withdraw-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .withdraw-btn:hover::before {
+            left: 100%;
+        }
+        .payment-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        .phonepe-icon, .googlepay-icon {
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+        .withdraw-btn i {
+            font-size: 1.2rem;
+        }
+        /* Cyber Border Effects */
+        .cyber-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            margin: 20px;
+            pointer-events: none;
+        }
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        }
+        .cyber-border::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #1a2332 0%, #0a0f1c 100%);
+            padding: 0;
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            margin: 0;
+            color: #00d4ff;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .close-btn {
+            color: #cccccc;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .close-btn:hover {
+            color: #ffffff;
+        }
+        .modal-body {
+            padding: 20px;
+            text-align: center;
+        }
+        .modal-body p {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin: 0;
+        }
+        .modal-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        .modal-close-btn {
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #ffffff;
+            padding: 10px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .modal-close-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+        /* Add scanning lines effect */
+        @keyframes scan {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            z-index: 1000;
+            animation: scan 3s linear infinite;
+            opacity: 0.6;
+        }
+        /* Mobile-First Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px 12px;
+                max-width: 100%;
+            }
+            
+            .main-title {
+                font-size: 1.6rem;
+                margin-bottom: 30px;
+                line-height: 1.1;
+                padding: 0 10px;
+            }
+            
+            .bitcoin-icon {
+                font-size: 2.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .btc-amount {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+            }
+            
+            .mining-timer {
+                font-size: 0.8rem;
+                margin-top: 6px;
+            }
+            
+            .cyber-border {
+                margin: 6px;
+                border-radius: 10px;
+            }
+            
+            .modal-content {
+                width: 90%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+            
+            #landing-page .content-wrapper {
+                margin-top: 12vh;
+                padding: 0 10px;
+            }
+            
+            .status-bar {
+                top: 10px;
+                right: 12px;
+                font-size: 11px;
+            }
+            
+            .progress-item {
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .progress-label {
+                width: 28px;
+                font-size: 0.75rem;
+            }
+            
+            .progress-value,
+            .progress-stat {
+                width: 32px;
+                font-size: 0.75rem;
+            }
+            
+            .cpu-stats {
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .stat-value {
+                font-size: 0.9rem;
+            }
+            
+            .stat-row {
+                gap: 15px;
+            }
+            
+            .start-mining-btn {
+                padding: 14px 28px;
+                font-size: 0.95rem;
+                letter-spacing: 1px;
+            }
+            
+            .withdraw-btn {
+                padding: 11px 12px;
+                font-size: 0.85rem;
+                margin-bottom: 12px;
+            }
+            
+            .mining-stats {
+                margin: 25px 0;
+            }
+            
+            .bitcoin-display {
+                margin: 30px 0 25px;
+            }
+            
+            .stats-header {
+                font-size: 0.8rem;
+                margin-bottom: 15px;
+            }
+            
+            .mining-chart {
+                height: 50px;
+                margin: 20px 0;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.1rem;
+            }
+            
+            .modal-body p {
+                font-size: 1rem;
+            }
+            
+            .payment-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .phonepe-icon, .googlepay-icon {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        /* Tablet and Desktop */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container {
+                max-width: 450px;
+                padding: 25px 20px;
+            }
+            
+            .main-title {
+                font-size: 2.4rem;
+            }
+            
+            .bitcoin-icon {
+                font-size: 3.5rem;
+            }
+            
+            .btc-amount {
+                font-size: 1.8rem;
+            }
+        }
+        @media (min-width: 769px) {
+            .container {
+                max-width: 500px;
+            }
+            
+            .main-title {
+                font-size: 3.2rem;
+            }
+            
+            .bitcoin-icon {
+                font-size: 4.5rem;
+            }
+            
+            .btc-amount {
+                font-size: 2.2rem;
+            }
+        }
+        @keyframes floatUp {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="result-box">
-        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-        </svg>
-        <h2>Turned your account to a<br>business account successfully</h2>
-        <a href="/">Go back</a>
+    <!-- Landing Page -->
+    <div id="landing-page" class="page active">
+        <div class="status-bar">
+            <span>STATUS: <span class="status-active">ACTIVE</span> <span class="status-dot"></span></span>
+        </div>
+        
+        <div class="container">
+            <div class="content-wrapper">
+                <h1 class="main-title" data-text="SECURE. FAST. REAL BITCOIN MINING">
+                    SECURE. FAST.<br>
+                    REAL BITCOIN MINING
+                </h1>
+                <button id="start-mining-btn" class="start-mining-btn">
+                    START MINING NOW
+                </button>
+            </div>
+        </div>
+        
+        <div class="cyber-border"></div>
     </div>
+    <!-- Mining Dashboard -->
+    <div id="mining-dashboard" class="page">
+        <div class="status-bar">
+            <span>STATUS: <span class="status-active">ACTIVE</span> <span class="status-dot"></span></span>
+        </div>
+        
+        <div class="container">
+            <div class="bitcoin-display">
+                <div class="bitcoin-icon">
+                    <i class="fab fa-bitcoin"></i>
+                </div>
+                <div class="btc-amount" id="btc-amount">BTC 0.00000001</div>
+                <div class="mining-timer" id="mining-timer">Mining Time: 0h 0m 0s</div>
+            </div>
+            <div class="mining-stats">
+                <div class="stats-header">
+                    <div class="mining-speed">MINING SPEED</div>
+                    <div class="stats-label">STATS</div>
+                </div>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <span class="progress-label">CPU</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="cpu-progress"></div>
+                        </div>
+                        <span class="progress-value" id="cpu-value">57%</span>
+                        <span class="progress-stat" id="cpu-stat">57%</span>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <span class="progress-label">GPU</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="gpu-progress"></div>
+                        </div>
+                        <span class="progress-value" id="gpu-value">72%</span>
+                        <span class="progress-stat" id="gpu-stat">72%</span>
+                    </div>
+                </div>
+                <div class="cpu-stats">
+                    <div class="cpu-stats-left">
+                        <div class="stat-label">CPU STATS</div>
+                        <div class="stat-row">
+                            <span class="stat-value" id="cpu-usage">27%</span>
+                            <span class="stat-value" id="cpu-freq">3.84 GHz</span>
+                        </div>
+                    </div>
+                    <div class="cpu-stats-right">
+                        <div class="stat-label">GPU STATS</div>
+                        <div class="stat-row">
+                            <span class="stat-value" id="gpu-usage">41%</span>
+                            <span class="stat-value" id="gpu-freq">~106.72 MHz</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mining-chart" id="mining-chart">
+                    <svg width="100%" height="60" viewBox="0 0 400 60">
+                        <path id="chart-path" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.8"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="withdrawal-options">
+                <button class="withdraw-btn phonepe" id="phonepe-btn">
+                    <svg class="payment-icon phonepe-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="50" fill="#5f259f"/>
+                        <path d="M30 30h40v40H30z" fill="white"/>
+                        <path d="M35 40h30v5H35z" fill="#5f259f"/>
+                        <path d="M35 50h20v5H35z" fill="#5f259f"/>
+                        <path d="M35 60h25v5H35z" fill="#5f259f"/>
+                    </svg>
+                    WITHDRAW TO PhonePe
+                </button>
+                
+                <button class="withdraw-btn googlepay" id="googlepay-btn">
+                    <svg class="payment-icon googlepay-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="50" fill="#4285f4"/>
+                        <path d="M25 35h50v30H25z" fill="white"/>
+                        <path d="M30 45h40v3H30z" fill="#34a853"/>
+                        <path d="M30 52h30v3H30z" fill="#ea4335"/>
+                        <path d="M30 59h35v3H30z" fill="#fbbc05"/>
+                    </svg>
+                    WITHDRAW TO GooglePay
+                </button>
+                
+                <button class="withdraw-btn crypto" id="crypto-btn">
+                    <i class="fas fa-wallet"></i>
+                    WITHDRAW TO CRYPTO WALLET
+                </button>
+            </div>
+        </div>
+        
+        <div class="cyber-border"></div>
+    </div>
+    <!-- Withdrawal Modal -->
+    <div id="withdrawal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdrawal Notice</h3>
+                <span class="close-btn" id="close-modal">×</span>
+            </div>
+            <div class="modal-body">
+                <p>Minimum withdrawal amount is 0.000477</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close-btn" id="modal-close">OK</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        class BitcoinMiningSimulator {
+            constructor() {
+                this.currentBTC = 0.00000001;
+                this.dailyTarget = 0.0002396;
+                this.startTime = Date.now();
+                this.isRunning = false;
+                this.chartData = [];
+                
+                this.init();
+            }
+            init() {
+                this.bindEvents();
+                this.loadSavedData();
+            }
+            bindEvents() {
+                // Start mining button
+                document.getElementById('start-mining-btn').addEventListener('click', () => {
+                    this.startMining();
+                });
+                // Withdrawal buttons
+                document.getElementById('phonepe-btn').addEventListener('click', () => {
+                    this.showWithdrawalModal();
+                });
+                document.getElementById('googlepay-btn').addEventListener('click', () => {
+                    this.showWithdrawalModal();
+                });
+                document.getElementById('crypto-btn').addEventListener('click', () => {
+                    this.showWithdrawalModal();
+                });
+                // Modal controls
+                document.getElementById('close-modal').addEventListener('click', () => {
+                    this.hideWithdrawalModal();
+                });
+                document.getElementById('modal-close').addEventListener('click', () => {
+                    this.hideWithdrawalModal();
+                });
+                // Close modal when clicking outside
+                document.getElementById('withdrawal-modal').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('withdrawal-modal')) {
+                        this.hideWithdrawalModal();
+                    }
+                });
+            }
+            startMining() {
+                // Hide landing page and show dashboard
+                document.getElementById('landing-page').classList.remove('active');
+                document.getElementById('mining-dashboard').classList.add('active');
+                
+                this.isRunning = true;
+                this.startTime = Date.now();
+                
+                // Start mining animation
+                this.startMiningLoop();
+                this.updateProgressBars();
+                this.generateChart();
+                
+                // Save state
+                this.saveData();
+            }
+            startMiningLoop() {
+                if (!this.isRunning) return;
+                // Update BTC amount every 1 second for live updates
+                setTimeout(() => {
+                    this.updateBTCAmount();
+                    this.startMiningLoop();
+                }, 1000);
+            }
+            updateBTCAmount() {
+                const currentTime = Date.now();
+                const elapsedSeconds = (currentTime - this.startTime) / 1000;
+                const elapsedHours = elapsedSeconds / 3600;
+                
+                // Calculate exact BTC that should be earned by now
+                // 24 hours = 0.0002396 BTC, so per second = 0.0002396 / (24 * 3600)
+                const btcPerSecond = this.dailyTarget / (24 * 3600);
+                const targetBTC = Math.min(elapsedSeconds * btcPerSecond, this.dailyTarget);
+                
+                // Add the starting amount (0.00000001)
+                const expectedBTC = 0.00000001 + targetBTC;
+                
+                // Add small random variation (±2% of the increment per second)
+                const variation = btcPerSecond * 0.02 * (Math.random() - 0.5);
+                let newAmount = expectedBTC + variation;
+                
+                // Ensure we don't exceed the daily target
+                if (newAmount <= 0.00000001 + this.dailyTarget) {
+                    this.currentBTC = newAmount;
+                    this.updateBTCDisplay();
+                    this.saveData();
+                }
+            }
+            updateBTCDisplay() {
+                const btcElement = document.getElementById('btc-amount');
+                btcElement.textContent = `BTC ${this.currentBTC.toFixed(8)}`;
+                
+                // Update timer and rate display
+                this.updateMiningTimer();
+                
+                // Add glow effect on update
+                btcElement.style.textShadow = '0 0 30px rgba(247, 147, 26, 1)';
+                setTimeout(() => {
+                    btcElement.style.textShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
+                }, 500);
+            }
+            updateMiningTimer() {
+                const currentTime = Date.now();
+                const elapsedSeconds = Math.floor((currentTime - this.startTime) / 1000);
+                
+                const hours = Math.floor(elapsedSeconds / 3600);
+                const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+                const seconds = elapsedSeconds % 60;
+                
+                document.getElementById('mining-timer').textContent = 
+                    `Mining Time: ${hours}h ${minutes}m ${seconds}s`;
+                
+                // Calculate current mining rate (for internal calculations only)
+                const btcPerSecond = this.dailyTarget / (24 * 3600);
+                
+                // Debug information - log to console every 10 seconds
+                if (elapsedSeconds % 10 === 0) {
+                    const expectedTotal = 0.00000001 + (elapsedSeconds * btcPerSecond);
+                    console.log(`Debug Mining Stats:
+                        Elapsed: ${elapsedSeconds}s (${(elapsedSeconds/3600).toFixed(2)}h)
+                        Expected BTC: ${expectedTotal.toFixed(10)}
+                        Current BTC: ${this.currentBTC.toFixed(10)}
+                        Rate: ${btcPerSecond.toFixed(12)} BTC/sec
+                        Daily Target: ${this.dailyTarget}
+                        Progress: ${((this.currentBTC - 0.00000001) / this.dailyTarget * 100).toFixed(4)}%
+                        24h Projection: ${(0.00000001 + this.dailyTarget).toFixed(8)} BTC`);
+                }
+            }
+            updateProgressBars() {
+                if (!this.isRunning) return;
+                // Simulate CPU usage (50-65%)
+                const cpuUsage = Math.random() * 15 + 50;
+                document.getElementById('cpu-progress').style.width = `${cpuUsage}%`;
+                document.getElementById('cpu-value').textContent = `${Math.round(cpuUsage)}%`;
+                document.getElementById('cpu-stat').textContent = `${Math.round(cpuUsage)}%`;
+                document.getElementById('cpu-usage').textContent = `${Math.round(cpuUsage * 0.5)}%`;
+                // Simulate GPU usage (65-80%)
+                const gpuUsage = Math.random() * 15 + 65;
+                document.getElementById('gpu-progress').style.width = `${gpuUsage}%`;
+                document.getElementById('gpu-value').textContent = `${Math.round(gpuUsage)}%`;
+                document.getElementById('gpu-stat').textContent = `${Math.round(gpuUsage)}%`;
+                document.getElementById('gpu-usage').textContent = `${Math.round(gpuUsage * 0.6)}%`;
+                // Update CPU frequency (3.6-4.0 GHz)
+                const cpuFreq = (Math.random() * 0.4 + 3.6).toFixed(2);
+                document.getElementById('cpu-freq').textContent = `${cpuFreq} GHz`;
+                // Update GPU frequency (100-115 MHz)
+                const gpuFreq = (Math.random() * 15 + 100).toFixed(2);
+                document.getElementById('gpu-freq').textContent = `~${gpuFreq} MHz`;
+                // Update every 2-3 seconds for more realistic mining simulation
+                setTimeout(() => {
+                    this.updateProgressBars();
+                }, Math.random() * 1000 + 2000);
+            }
+            generateChart() {
+                const chartPath = document.getElementById('chart-path');
+                const points = [];
+                
+                // Generate random chart data points
+                for (let i = 0; i < 50; i++) {
+                    const x = (i / 49) * 400;
+                    const y = 30 + Math.sin(i * 0.2) * 10 + Math.random() * 8;
+                    points.push(`${x},${y}`);
+                }
+                
+                // Create SVG path
+                const pathData = `M ${points.join(' L ')}`;
+                chartPath.setAttribute('d', pathData);
+                
+                // Update chart every 5 seconds
+                if (this.isRunning) {
+                    setTimeout(() => {
+                        this.generateChart();
+                    }, 5000);
+                }
+            }
+            showWithdrawalModal() {
+                const modal = document.getElementById('withdrawal-modal');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Add fade-in animation
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                }, 10);
+            }
+            hideWithdrawalModal() {
+                const modal = document.getElementById('withdrawal-modal');
+                modal.style.opacity = '0';
+                
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 200);
+            }
+            saveData() {
+                const data = {
+                    currentBTC: this.currentBTC,
+                    startTime: this.startTime,
+                    isRunning: this.isRunning
+                };
+                localStorage.setItem('bitcoinMiningData', JSON.stringify(data));
+            }
+            loadSavedData() {
+                const saved = localStorage.getItem('bitcoinMiningData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    this.currentBTC = data.currentBTC || 0.00000001;
+                    this.startTime = data.startTime || Date.now();
+                    
+                    // Update display with saved data
+                    this.updateBTCDisplay();
+                    
+                    if (data.isRunning) {
+                        // Auto-resume mining if it was running
+                        setTimeout(() => {
+                            // Show dashboard instead of landing page
+                            document.getElementById('landing-page').classList.remove('active');
+                            document.getElementById('mining-dashboard').classList.add('active');
+                            
+                            this.isRunning = true;
+                            this.startMiningLoop();
+                            this.updateProgressBars();
+                            this.generateChart();
+                        }, 500);
+                    }
+                }
+            }
+            // Reset mining data (for testing purposes)
+            resetMining() {
+                this.currentBTC = 0.00000001;
+                this.startTime = Date.now();
+                this.isRunning = false;
+                localStorage.removeItem('bitcoinMiningData');
+                
+                // Return to landing page
+                document.getElementById('mining-dashboard').classList.remove('active');
+                document.getElementById('landing-page').classList.add('active');
+            }
+        }
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.miningSimulator = new BitcoinMiningSimulator();
+            
+            // Add keyboard shortcut for reset (Ctrl+Shift+R for testing)
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'r' && e.shiftKey) {
+                    e.preventDefault();
+                    if (confirm('Reset mining progress?')) {
+                        window.miningSimulator.resetMining();
+                    }
+                }
+            });
+            // Create floating particles effect
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 2px;
+                    height: 2px;
+                    background: rgba(0, 212, 255, 0.6);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1;
+                    left: ${Math.random() * 100}vw;
+                    top: 100vh;
+                    animation: floatUp ${Math.random() * 10 + 15}s linear forwards;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 25000);
+            }
+            
+            // Create particles periodically
+            setInterval(createParticle, 3000);
+        });
+    </script>
 </body>
 </html>
